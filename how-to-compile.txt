@@ -1,1 +1,0 @@
-I will put instructions here on how to compile the code and make from source when this is fully done. 
