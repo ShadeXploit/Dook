@@ -1,70 +1,181 @@
 import requests
 from bs4 import BeautifulSoup
 import os
+import tkinter as tk
+from tkinter import ttk, messagebox, filedialog
+from urllib.parse import unquote
+import threading
 
 def google_dork_search(query, filetype):
-    search_url = (f"https://www.google.com/search?q={query}+filetype:{filetype}")
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
-    }
-    response = requests.get(search_url, headers=headers)
-    soup = BeautifulSoup(response.text, 'html.parser')
+    """Search Google with dork syntax and return first result URL"""
+    try:
+        search_url = f"https://www.google.com/search?q={query}+filetype:{filetype}"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+        response = requests.get(search_url, headers=headers, timeout=10)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
 
-    # Find the first search result link
-    for link in soup.find_all('a', href=True):
-        if 'url?q=' in link['href']:
-            return link['href'].split('url?q=')[1].split('&sa=U')[0]
-    return None
+        # Find the first search result link
+        for link in soup.find_all('a', href=True):
+            href = link['href']
+            if 'url?q=' in href:
+                url = href.split('url?q=')[1].split('&sa=U')[0]
+                return unquote(url)
+        return None
+    except requests.exceptions.RequestException as e:
+        return None
 
-def download_file(url, filename):
-    response = requests.get(url, stream=True)
-    with open(filename, 'wb') as file:
-        for chunk in response.iter_content(chunk_size=8192):
-            file.write(chunk)
-    print(f"Downloaded {filename}") 
+def download_file(url, filename, callback=None):
+    """Download file from URL with progress callback"""
+    try:
+        response = requests.get(url, stream=True, timeout=10)
+        response.raise_for_status()
+        total_size = int(response.headers.get('content-length', 0))
+        downloaded = 0
+        
+        with open(filename, 'wb') as file:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    file.write(chunk)
+                    downloaded += len(chunk)
+                    if callback and total_size:
+                        progress = (downloaded / total_size) * 100
+                        callback(progress)
+        return True
+    except Exception as e:
+        raise Exception(f"Download failed: {str(e)}")
+
+class DookGUI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Dook - Google Dorking Tool")
+        self.root.geometry("600x500")
+        self.root.configure(bg='#f0f0f0')
+        
+        # Title
+        title = tk.Label(root, text="Dook", font=("Arial", 24, "bold"), bg='#f0f0f0')
+        title.pack(pady=10)
+        
+        subtitle = tk.Label(root, text="Google Dorking Search Tool", font=("Arial", 10), bg='#f0f0f0', fg='#666')
+        subtitle.pack()
+        
+        # Search Frame
+        search_frame = ttk.LabelFrame(root, text="Search Settings", padding=10)
+        search_frame.pack(pady=10, padx=10, fill="both", expand=False)
+        
+        # Query
+        tk.Label(search_frame, text="Search Query:").grid(row=0, column=0, sticky="w", pady=5)
+        self.query_entry = ttk.Entry(search_frame, width=40)
+        self.query_entry.grid(row=0, column=1, padx=5, pady=5)
+        
+        # File Type
+        tk.Label(search_frame, text="File Type:").grid(row=1, column=0, sticky="w", pady=5)
+        self.filetype_var = tk.StringVar(value="pdf")
+        self.filetype_combo = ttk.Combobox(search_frame, textvariable=self.filetype_var, 
+                                           values=["pdf", "doc", "docx", "xls", "xlsx", "ppt", "txt"], width=37)
+        self.filetype_combo.grid(row=1, column=1, padx=5, pady=5)
+        
+        # Buttons Frame
+        button_frame = ttk.Frame(root)
+        button_frame.pack(pady=10)
+        
+        self.search_btn = ttk.Button(button_frame, text="Search & Download", command=self.search_and_download)
+        self.search_btn.pack(side="left", padx=5)
+        
+        self.clear_btn = ttk.Button(button_frame, text="Clear", command=self.clear_fields)
+        self.clear_btn.pack(side="left", padx=5)
+        
+        # Output Frame
+        output_frame = ttk.LabelFrame(root, text="Status", padding=10)
+        output_frame.pack(pady=10, padx=10, fill="both", expand=True)
+        
+        # Progress Bar
+        self.progress = ttk.Progressbar(output_frame, mode='indeterminate')
+        self.progress.pack(fill="x", pady=5)
+        
+        # Output Text
+        self.output_text = tk.Text(output_frame, height=12, width=70, wrap="word")
+        self.output_text.pack(fill="both", expand=True, pady=5)
+        
+        scrollbar = ttk.Scrollbar(self.output_text)
+        scrollbar.pack(side="right", fill="y")
+        self.output_text.config(yscrollcommand=scrollbar.set)
+        
+        # Status Bar
+        self.status_var = tk.StringVar(value="Ready")
+        status_bar = ttk.Label(root, textvariable=self.status_var, relief="sunken")
+        status_bar.pack(fill="x")
+    
+    def log(self, message):
+        """Log message to output text"""
+        self.output_text.insert("end", message + "\n")
+        self.output_text.see("end")
+        self.root.update()
+    
+    def clear_fields(self):
+        """Clear input fields"""
+        self.query_entry.delete(0, "end")
+        self.output_text.delete("1.0", "end")
+        self.status_var.set("Ready")
+    
+    def search_and_download(self):
+        """Search and download file in background thread"""
+        query = self.query_entry.get().strip()
+        filetype = self.filetype_var.get()
+        
+        if not query:
+            messagebox.showwarning("Input Error", "Please enter a search query")
+            return
+        
+        # Disable button and start progress
+        self.search_btn.config(state="disabled")
+        self.progress.start()
+        self.output_text.delete("1.0", "end")
+        
+        # Run in background thread
+        thread = threading.Thread(target=self._search_download_worker, args=(query, filetype))
+        thread.start()
+    
+    def _search_download_worker(self, query, filetype):
+        """Worker thread for search and download"""
+        try:
+            self.status_var.set("Searching...")
+            self.log(f"Searching for: {query} (filetype: {filetype})")
+            
+            url = google_dork_search(query, filetype)
+            
+            if not url:
+                self.log("❌ No results found. Try a different search.")
+                self.status_var.set("No results found")
+            else:
+                self.log(f"✓ Found: {url}\n")
+                self.log("Downloading...")
+                self.status_var.set("Downloading...")
+                
+                filename = f"{query.replace(' ', '_')}.{filetype}"
+                
+                def progress_callback(percent):
+                    self.status_var.set(f"Downloading... {percent:.1f}%")
+                
+                try:
+                    download_file(url, filename, progress_callback)
+                    self.log(f"✓ Downloaded successfully: {filename}")
+                    self.log(f"Saved to: {os.path.abspath(filename)}")
+                    self.status_var.set("Download complete")
+                    messagebox.showinfo("Success", f"File downloaded:\n{filename}")
+                except Exception as e:
+                    self.log(f"❌ Download failed: {str(e)}")
+                    self.status_var.set("Download failed")
+        except Exception as e:
+            self.log(f"❌ Error: {str(e)}")
+            self.status_var.set("Error occurred")
+        finally:
+            self.progress.stop()
+            self.search_btn.config(state="normal")
 
 def main():
-    while True:
-        menu = '''
-                _____              _     
-                |  _ \  ___   ___ | | __ 
-                | | | |/ _ \ / _ \| |/ / 
-                | |_| | (_) | (_) |   <  
-                |____/ \___/ \___/|_|\_\ 
-
-                                by ShadeXploit
-        =========================================
-        1. Find Book
-        2. Search and download another file type
-        3. Exit
-        =========================================
-        '''
-        print(menu)
-        choice = input("Enter your choice (1-3): ")
-
-        if choice == '1':
-            query = input("Enter your search query: ")
-            filetype = 'pdf'
-            url = google_dork_search(query, filetype)
-            if url:
-                filename = f"{query.replace(' ', '_')}.pdf"
-                download_file(url, filename)
-            else:
-                print("No results found.")
-        elif choice == '2':
-            query = input("Enter your search query: ")
-            filetype = input("Enter the file type (e.g., doc, xls): ")
-            url = google_dork_search(query, filetype)
-            if url:
-                filename = f"{query.replace(' ', '_')}.{filetype}"
-                download_file(url, filename)
-            else:
-                print("No results found.")
-        elif choice == '3':
-            print("Exiting the program.")
-            break
-        else:
-            print("Invalid choice. Please enter a number between 1 and 3.")
-
-if __name__ == "__main__":
-    main()
+    root = tk.Tk()
+    app = DookGUI(root)
+    root.mainloop()
