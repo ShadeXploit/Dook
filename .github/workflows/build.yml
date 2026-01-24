@@ -94,18 +94,23 @@ jobs:
           with:
             name: Dook-Linux
             path: ./artifacts/linux
+          - name: Rename macOS and Linux executables
+              run: |
+                mv ./artifacts/windows/dook.exe ./artifacts/windows/dook-win.exe
+                mv ./artifacts/macos/dook ./artifacts/macos/dook-macos
+                mv ./artifacts/linux/dook ./artifacts/linux/dook-linux
         - name: Verify Artifacts
-          run: |
-            ls -l ./artifacts/windows/dook.exe
-            ls -l ./artifacts/macos/dook
-            ls -l ./artifacts/linux/dook
+            run: |
+              ls -l ./artifacts/windows/dook-win.exe
+              ls -l ./artifacts/macos/dook-macos
+              ls -l ./artifacts/linux/dook-linux
         - name: Create Release
           uses: softprops/action-gh-release@v1
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
-            tag_name: ${{ github.ref_name }}
-            files: |
-              artifacts/windows/dook.exe
-              artifacts/macos/dook
-              artifacts/linux/dook
+              tag_name: ${{ github.ref_name }}
+              files: |
+                artifacts/windows/dook-win.exe
+                artifacts/macos/dook-macos
+                artifacts/linux/dook-linux
