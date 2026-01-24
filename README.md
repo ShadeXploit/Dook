@@ -1,4 +1,4 @@
-# 🔍 Dook - Find and Read Any Book on the Internet
+# Dook - Find and Read Any Book on the Internet
 
 [![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -6,21 +6,21 @@
 
 A powerful and user-friendly Google dorking search tool with an intuitive GUI. Search for specific file types across the web - perfect for finding ebooks and documents using advanced Google dork queries.
 
-## ✨ Features
+## Features
 
-- 🎯 **Advanced Google Dorking** - Search using filetype dorks and advanced operators
-- 💻 **Modern GUI** - Clean, responsive tkinter interface
-- 🌐 **Browser Integration** - Opens searches directly in your default browser
-- 📚 **Ebook Focused** - Pre-configured file types for common ebook formats
-- 🧵 **Non-Blocking UI** - Background threading prevents GUI freezing
-- 📝 **Multiple File Types** - Support for PDF, EPUB, TXT, DOCX, DOC, ODT
+- **Advanced Google Dorking** - Search using filetype dorks and advanced operators
+- **Modern GUI** - Clean, responsive tkinter interface
+- **Browser Integration** - Opens searches directly in your default browser
+- **Ebook Focused** - Pre-configured file types for common ebook formats
+- **Non-Blocking UI** - Background threading prevents GUI freezing
+- **Multiple File Types** - Support for PDF, EPUB, TXT, DOCX, DOC, ODT
 
-## 📋 Requirements
+## Requirements
 
 - Python 3.7+
 - tkinter (included with Python on Windows)
 
-## 📦 Installation
+## Installation
 
 ### Step 1: Clone the Repository
 ```bash
@@ -40,7 +40,7 @@ pip install -r requirements.txt
 
 > **Want to compile from source?** Check out [COMPILE.md](COMPILE.md) for detailed instructions on building Dook directly from the source code.
 
-## 🚀 Usage
+## Usage
 
 Simply run the script to launch the GUI:
 
@@ -86,7 +86,7 @@ Query: "Python Programming Guide"
 Filetype: PDF
 ```
 
-## 🔍 Google Dork Operators
+## Google Dork Operators
 
 This tool supports Google's powerful dork operators. Here are the most useful ones:
 
@@ -112,7 +112,7 @@ Stephen King filetype:txt
 "Programming in C" site:archive.org filetype:pdf
 ```
 
-## 📋 Dependencies
+## Dependencies
 
 | Package | Version | Purpose |
 |---------|---------|---------|
@@ -120,7 +120,7 @@ Stephen King filetype:txt
 | `beautifulsoup4` | Latest | HTML parsing |
 | `tkinter` | Built-in | GUI framework |
 
-## 🎨 Interface
+## Interface
 
 The GUI includes:
 - **Search Query Input** - Enter your search terms
@@ -130,14 +130,14 @@ The GUI includes:
 - **Output Log** - View search information
 - **Status Bar** - Real-time operation status
 
-## ⚠️ Important Notes
+## Important Notes
 
 - **Ethical Use Only** - Use this tool responsibly and legally
 - **Respect Copyright** - Only download files you have permission to access
 - **Browser Based** - The tool opens searches in your browser for you to manually select results
 - **No Automatic Downloads** - You control what gets downloaded
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Browser won't open
 - Check if your default browser is properly configured
@@ -154,19 +154,19 @@ The GUI includes:
 - On Linux: `sudo apt-get install python3-tk`
 - On macOS: tkinter should be included with Python
 
-## 🤝 Contributing
+## Contributing
 
 Found a bug or have a feature request? Feel free to open an issue or submit a pull request!
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Original Author
+## Original Author
 
-Created with ❤️ by ShadeXploit
+Created with love by ShadeXploit
 
-## 🔗 Links
+## Links
 
 - [GitHub Repository](https://github.com/ShadeXploit/Dook)
 - [Report Issues](https://github.com/ShadeXploit/Dook/issues)
@@ -174,14 +174,14 @@ Created with ❤️ by ShadeXploit
 
 ---
 
-**⭐ If you find this tool helpful, please consider giving it a star!**
+**If you find this tool helpful, please consider giving it a star!**
 
 *Last Updated: January 2026*
 - **URL Decoding** - Properly handles encoded URLs from Google results
 - **Chunk Streaming** - Efficient memory usage for large files
 - **Thread Safety** - Background worker threads prevent UI blocking
 
-## 📝 File Structure
+## File Structure
 
 ```
 Dook/
@@ -190,14 +190,14 @@ Dook/
 └── requirements.txt # Python dependencies
 ```
 
-## ⚠️ Important Notes
+## Important Notes
 
 - **Ethical Use Only** - Use this tool responsibly and legally
 - **Respect robots.txt** - Don't overwhelm servers
 - **Google ToS** - This tool complies with Google's terms of service
 - **File Permissions** - Only download files you have permission to access
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### "No results found"
 - Try a different search query
@@ -213,25 +213,25 @@ Dook/
 - Ensure tkinter is installed: `python -m tkinter`
 - On Linux, you may need: `sudo apt-get install python3-tk`
 
-## 🤝 Contributing
+## Contributing
 
 Found a bug or have a feature request? Feel free to open an issue or submit a pull request!
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Original Author
+## Original Author
 
-Created with ❤️ by ShadeXploit
+Created with love by ShadeXploit
 
-## 🔗 Links
+## Links
 
 - [GitHub Repository](https://github.com/yourusername/Dook)
 - [Report Issues](https://github.com/yourusername/Dook/issues)
 
 ---
 
-**⭐ If you find this tool helpful, please consider giving it a star!**
+**If you find this tool helpful, please consider giving it a star!**
 
 *Last Updated: January 2026*  
