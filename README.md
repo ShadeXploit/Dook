@@ -4,18 +4,16 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)]()
 
-A powerful and user-friendly Google dorking search tool with an intuitive GUI. Search for specific file types across the web and download them instantly.
+A powerful and user-friendly Google dorking search tool with an intuitive GUI. Search for specific file types across the web - perfect for finding ebooks and documents using advanced Google dork queries.
 
 ## ✨ Features
 
-- 🎯 **Advanced Google Dorking** - Search using filetype dorks to find specific documents
+- 🎯 **Advanced Google Dorking** - Search using filetype dorks and advanced operators
 - 💻 **Modern GUI** - Clean, responsive tkinter interface
-- 📥 **One-Click Download** - Find and download files automatically
-- 📊 **Progress Tracking** - Real-time progress bar and status updates
-- 🔒 **Robust Error Handling** - Handles timeouts, connection errors, and invalid URLs
-- 📝 **Multiple File Types** - Support for PDF, DOC, DOCX, XLS, XLSX, PPT, TXT
+- 🌐 **Browser Integration** - Opens searches directly in your default browser
+- 📚 **Ebook Focused** - Pre-configured file types for common ebook formats
 - 🧵 **Non-Blocking UI** - Background threading prevents GUI freezing
-- 📍 **File Location Display** - Shows exact save path for downloaded files
+- 📝 **Multiple File Types** - Support for PDF, EPUB, TXT, DOCX, DOC, ODT
 
 ## 📋 Requirements
 
@@ -30,10 +28,9 @@ git clone https://github.com/ShadeXploit/Dook.git
 cd Dook
 ```
 
-### Step 2: Install Dependencies and Make Executable
+### Step 2: Install Dependencies
 ```bash
 pip install requests beautifulsoup4
-chmode +x dook.py
 ```
 
 Or using requirements:
@@ -46,58 +43,138 @@ pip install -r requirements.txt
 Simply run the script to launch the GUI:
 
 ```bash
-python dook-v4.py
+python dook.py
 ```
 
 ### Using the GUI
 
-1. **Enter Search Query** - Type what you're looking for (e.g., "confidential reports", "internal memos")
-2. **Select File Type** - Choose from the dropdown (PDF, DOC, DOCX, XLS, XLSX, PPT, TXT)
-3. **Click "Search & Download"** - The tool will search Google and download the first result
-4. **Monitor Status** - Watch the progress bar and status messages in real-time
-5. **Find Your File** - Downloaded files are saved in the current directory
+1. **Enter Search Query** - Type what you're looking for (e.g., "Harry Potter", "Python Programming")
+2. **Select File Type** - Choose from ebook formats (PDF, EPUB, TXT, DOCX, DOC, ODT)
+3. **Click "Search & Open"** - Your default browser opens with the Google search results
+4. **Click the first link** - Download or view the file directly
+
+### Supported Ebook File Types
+
+| Format | Description | Best For |
+|--------|-------------|----------|
+| **PDF** | Portable Document Format | Universal ebook format, works everywhere |
+| **EPUB** | Electronic Publication | Standard ebook format, compatible with most readers |
+| **TXT** | Plain Text | Simple text-based books and documents |
+| **DOCX** | Microsoft Word | Modern word documents and formatted texts |
+| **DOC** | Legacy Word Format | Older Microsoft Word documents |
+| **ODT** | OpenDocument Text | LibreOffice/OpenOffice documents |
 
 ### Example Searches
 
+**Basic ebook search:**
 ```
-Query: "Financial Reports"
+Query: "The Great Gatsby"
 Filetype: PDF
+```
 
-Query: "Employee Directory"
-Filetype: XLSX
+**Author search:**
+```
+Query: "George Orwell 1984"
+Filetype: EPUB
+```
 
-Query: "Budget Planning"
-Filetype: DOCX
+**Technical documentation:**
+```
+Query: "Python Programming Guide"
+Filetype: PDF
+```
+
+## 🔍 Google Dork Operators
+
+This tool supports Google's powerful dork operators. Here are the most useful ones:
+
+| Operator | Description | Example |
+|----------|-------------|---------|
+| `filetype:` | Search for specific file types | `filetype:pdf` |
+| `intitle:` | Search in page titles | `intitle:"book title"` |
+| `intext:` | Search in page content | `intext:"chapter"` |
+| `site:` | Search specific websites | `site:archive.org` |
+| `"phrase"` | Exact phrase match | `"exact book title"` |
+| `OR` | Either term | `PDF OR EPUB` |
+| `-` | Exclude term | `-site:amazon.com` |
+
+### Advanced Dork Examples for Books
+
+```
+"The Bible" filetype:pdf
+
+"Harry Potter" intitle:"index.of" filetype:epub
+
+Stephen King filetype:txt
+
+"Programming in C" site:archive.org filetype:pdf
 ```
 
 ## 📋 Dependencies
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `requests` | Latest | HTTP requests for web scraping |
-| `beautifulsoup4` | Latest | HTML parsing and link extraction |
+| `requests` | Latest | HTTP requests for web searches |
+| `beautifulsoup4` | Latest | HTML parsing |
 | `tkinter` | Built-in | GUI framework |
 
 ## 🎨 Interface
 
 The GUI includes:
-- **Search Settings Panel** - Configure query and file type
-- **Status Display** - Real-time search and download status
-- **Progress Bar** - Visual feedback during operations
-- **Output Log** - Detailed information about searches and downloads
-- **Control Buttons** - Search, Download, and Clear functions
+- **Search Query Input** - Enter your search terms
+- **File Type Dropdown** - Select from common ebook formats
+- **Search & Open Button** - Launch your search
+- **Clear Button** - Reset the search fields
+- **Output Log** - View search information
+- **Status Bar** - Real-time operation status
 
-## 🔍 How It Works
+## ⚠️ Important Notes
 
-1. **Search Phase**: Sends a Google search with filetype dork syntax
-2. **Parse Phase**: BeautifulSoup extracts the first relevant result
-3. **Download Phase**: Downloads the file with progress tracking
-4. **Save Phase**: Saves file with formatted name in current directory
+- **Ethical Use Only** - Use this tool responsibly and legally
+- **Respect Copyright** - Only download files you have permission to access
+- **Browser Based** - The tool opens searches in your browser for you to manually select results
+- **No Automatic Downloads** - You control what gets downloaded
 
-## ⚙️ Technical Details
+## 🐛 Troubleshooting
 
-- **User-Agent Rotation** - Uses modern Chrome user agent to avoid blocks
-- **Timeout Protection** - 10-second timeout on all requests
+### Browser won't open
+- Check if your default browser is properly configured
+- Try manually opening the search URL in your browser
+- Ensure you have an internet connection
+
+### No results found
+- Try different search terms or file types
+- Use more specific titles or author names
+- Check that the book exists in that format online
+
+### GUI not launching
+- Ensure tkinter is installed: `python -m tkinter`
+- On Linux: `sudo apt-get install python3-tk`
+- On macOS: tkinter should be included with Python
+
+## 🤝 Contributing
+
+Found a bug or have a feature request? Feel free to open an issue or submit a pull request!
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Original Author
+
+Created with ❤️ by ShadeXploit
+
+## 🔗 Links
+
+- [GitHub Repository](https://github.com/ShadeXploit/Dook)
+- [Report Issues](https://github.com/ShadeXploit/Dook/issues)
+- [Google Dork Cheat Sheet](https://www.exploit-db.com/google-hacking-database)
+
+---
+
+**⭐ If you find this tool helpful, please consider giving it a star!**
+
+*Last Updated: January 2026*
 - **URL Decoding** - Properly handles encoded URLs from Google results
 - **Chunk Streaming** - Efficient memory usage for large files
 - **Thread Safety** - Background worker threads prevent UI blocking
