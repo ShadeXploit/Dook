@@ -94,7 +94,7 @@ jobs:
           with:
             name: Dook-Linux
             path: ./artifacts/linux
-          - name: Rename macOS and Linux executables
+        - name: Rename macOS and Linux executables
               run: |
                 mv ./artifacts/windows/dook.exe ./artifacts/windows/dook-win.exe
                 mv ./artifacts/macos/dook ./artifacts/macos/dook-macos
