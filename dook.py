@@ -27,6 +27,13 @@ class DookGUI:
         self.root.geometry("600x500")
         self.root.configure(bg='#f0f0f0')
         
+        # Set window icon if it exists
+        try:
+            if os.path.exists("icon.ico"):
+                self.root.iconbitmap("icon.ico")
+        except Exception as e:
+            pass  # Icon not found, continue without it
+        
         # Title
         title = tk.Label(root, text="Dook", font=("Arial", 24, "bold"), bg='#f0f0f0')
         title.pack(pady=10)
