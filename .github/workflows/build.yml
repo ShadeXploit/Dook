@@ -94,6 +94,11 @@ jobs:
           with:
             name: Dook-Linux
             path: ./artifacts/linux
+          - name: Verify Artifacts
+            run: |
+              ls -l ./artifacts/windows/dook.exe
+              ls -l ./artifacts/macos/dook
+              ls -l ./artifacts/linux/dook
         - name: Create Release
           uses: softprops/action-gh-release@v1
           env:
