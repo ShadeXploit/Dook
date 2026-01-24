@@ -73,15 +73,7 @@ pip install requests beautifulsoup4
 - **requests** - Handles HTTP requests to Google
 - **beautifulsoup4** - Parses HTML responses
 
-## Step 5: Verify Installation
-
-Test that all dependencies are installed correctly:
-
-```bash
-python -c "import requests, bs4, tkinter; print('All dependencies installed successfully!')"
-```
-
-## Step 6: Run the Application
+## Step 5: Run the Application
 
 Launch the Dook GUI:
 
@@ -191,24 +183,41 @@ This allows you to test changes without reinstalling each time.
 
 ## Building a Standalone Executable
 
-If you want to distribute Dook as a standalone .exe file, you can use PyInstaller:
+If you want to distribute Dook as a standalone executable, you can use PyInstaller. **Important:** PyInstaller creates executables for the OS it's running on. To create a Windows `.exe`, you must run these commands on a Windows machine. To create a Linux executable, run them on Linux, etc.
 
-### Install PyInstaller:
+### For Windows (.exe):
+
+Run these commands on a **Windows machine**:
+
 ```bash
 pip install pyinstaller
+pyinstaller --onefile --windowed --icon=icon.ico dook.py
 ```
 
-### Build the executable:
+The `.exe` file will be created in the `dist/` folder.
+
+### For Linux/macOS:
+
+Run these commands on a **Linux or macOS machine**:
+
 ```bash
+pip install pyinstaller
 pyinstaller --onefile --windowed dook.py
 ```
 
 The executable will be created in the `dist/` folder.
 
-### Options explained:
-- `--onefile` - Creates a single executable file
-- `--windowed` - Hides the console window on startup
-- `dook.py` - The main Python file
+### PyInstaller Options Explained:
+- `--onefile` - Creates a single executable file (instead of a folder)
+- `--windowed` - Hides the console window on startup (Windows only, recommended)
+- `--icon=icon.ico` - Sets a custom icon for the executable (Windows only, optional)
+- `dook.py` - The main Python file to compile
+
+### Cross-Platform Notes:
+- **Windows executables (.exe):** Only runnable on Windows
+- **Linux executables:** Only runnable on Linux
+- **macOS executables:** Only runnable on macOS
+- You **cannot** create a Windows executable from Linux, or vice versa
 
 ## System Requirements
 
