@@ -26,16 +26,17 @@ A powerful and user-friendly Google dorking search tool with an intuitive GUI. S
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/yourusername/Dook.git
+git clone https://github.com/ShadeXploit/Dook.git
 cd Dook
 ```
 
-### Step 2: Install Dependencies
+### Step 2: Install Dependencies and Make Executable
 ```bash
 pip install requests beautifulsoup4
+chmode +x dook.py
 ```
 
-Or using requirements (if you create one):
+Or using requirements:
 ```bash
 pip install -r requirements.txt
 ```
