@@ -185,8 +185,10 @@ Created with love by ShadeXploit
 
 ```
 Dook/
-├── dook-v4.py       # Main application file
+├── COMPILE.md       # Compile from source
+├── dook.py          # Main application file
 ├── README.md        # This file
+├── icon.ico         # Icon file
 └── requirements.txt # Python dependencies
 ```
 
