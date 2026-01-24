@@ -79,15 +79,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        - name: Download Windows build
+          uses: actions/download-artifact@v4
+          with:
+            name: Dook-Windows
+            path: ./artifacts/windows
+        - name: Download macOS build
+          uses: actions/download-artifact@v4
+          with:
+            name: Dook-macOS
+            path: ./artifacts/macos
+        - name: Download Linux build
+          uses: actions/download-artifact@v4
+          with:
+            name: Dook-Linux
+            path: ./artifacts/linux
       - name: Create Release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref_name }}
-          files: |
-            Dook-Windows/dook.exe
-            Dook-macOS/dook
-            Dook-Linux/dook
+            tag_name: ${{ github.ref_name }}
+            files: |
+              artifacts/windows/dook.exe
+              artifacts/macos/dook
+              artifacts/linux/dook
