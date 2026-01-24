@@ -38,6 +38,8 @@ Or using requirements:
 pip install -r requirements.txt
 ```
 
+> **Want to compile from source?** Check out [COMPILE.md](COMPILE.md) for detailed instructions on building Dook directly from the source code.
+
 ## 🚀 Usage
 
 Simply run the script to launch the GUI:
