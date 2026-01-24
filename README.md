@@ -1,4 +1,4 @@
-# 🔍 Dook - Google Dorking Tool
+# 🔍 Dook - Find and Read Any Book on the Internet
 
 [![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
