@@ -21,16 +21,26 @@ def google_dork_search(query, filetype):
         for link in soup.find_all('a', href=True):
             href = link['href']
             if 'url?q=' in href:
-                url = href.split('url?q=')[1].split('&sa=U')[0]
-                return unquote(url)
+                try:
+                    url = href.split('url?q=')[1].split('&sa=U')[0]
+                    decoded_url = unquote(url)
+                    # Validate it's a real URL
+                    if decoded_url.startswith('http'):
+                        return decoded_url
+                except:
+                    continue
         return None
     except requests.exceptions.RequestException as e:
+        print(f"Request error: {e}")
+        return None
+    except Exception as e:
+        print(f"Search error: {e}")
         return None
 
 def download_file(url, filename, callback=None):
     """Download file from URL with progress callback"""
     try:
-        response = requests.get(url, stream=True, timeout=10)
+        response = requests.get(url, stream=True, timeout=15, allow_redirects=True)
         response.raise_for_status()
         total_size = int(response.headers.get('content-length', 0))
         downloaded = 0
@@ -44,6 +54,8 @@ def download_file(url, filename, callback=None):
                         progress = (downloaded / total_size) * 100
                         callback(progress)
         return True
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"Download failed: {str(e)}")
     except Exception as e:
         raise Exception(f"Download failed: {str(e)}")
 
@@ -74,7 +86,7 @@ class DookGUI:
         tk.Label(search_frame, text="File Type:").grid(row=1, column=0, sticky="w", pady=5)
         self.filetype_var = tk.StringVar(value="pdf")
         self.filetype_combo = ttk.Combobox(search_frame, textvariable=self.filetype_var, 
-                                           values=["pdf", "doc", "docx", "xls", "xlsx", "ppt", "txt"], width=37)
+                                           values=["pdf", "epub", "mobi", "azw3", "txt", "docx"], width=37)
         self.filetype_combo.grid(row=1, column=1, padx=5, pady=5)
         
         # Buttons Frame
@@ -143,18 +155,23 @@ class DookGUI:
         try:
             self.status_var.set("Searching...")
             self.log(f"Searching for: {query} (filetype: {filetype})")
+            self.log(f"Search URL: https://www.google.com/search?q={query}+filetype:{filetype}")
             
             url = google_dork_search(query, filetype)
             
             if not url:
-                self.log("❌ No results found. Try a different search.")
+                self.log("❌ No results found. Try a different search query or file type.")
+                self.log("Tips:")
+                self.log("  - Make sure the file type matches what's available online")
+                self.log("  - Try more specific search terms")
+                self.log("  - Use quotes for exact phrases: \"the exact title\"")
                 self.status_var.set("No results found")
             else:
-                self.log(f"✓ Found: {url}\n")
+                self.log(f"✓ Found result: {url}\n")
                 self.log("Downloading...")
                 self.status_var.set("Downloading...")
                 
-                filename = f"{query.replace(' ', '_')}.{filetype}"
+                filename = f"{query.replace(' ', '_').replace('\"', '')}.{filetype}"
                 
                 def progress_callback(percent):
                     self.status_var.set(f"Downloading... {percent:.1f}%")
@@ -164,7 +181,7 @@ class DookGUI:
                     self.log(f"✓ Downloaded successfully: {filename}")
                     self.log(f"Saved to: {os.path.abspath(filename)}")
                     self.status_var.set("Download complete")
-                    messagebox.showinfo("Success", f"File downloaded:\n{filename}")
+                    messagebox.showinfo("Success", f"File downloaded:\n{filename}\n\nLocation: {os.path.abspath(filename)}")
                 except Exception as e:
                     self.log(f"❌ Download failed: {str(e)}")
                     self.status_var.set("Download failed")
@@ -179,3 +196,5 @@ def main():
     root = tk.Tk()
     app = DookGUI(root)
     root.mainloop()
+if __name__ == "__main__":
+    main()
